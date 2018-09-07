@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:abdroid="http://schemas.android.com/apk/res-auto"
+    package="com.example.vgubarev.testapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="false"
+        android:smallScreens="false"
+        android:xlargeScreens="false" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/label"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="Ввод показаний"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="OPEN_COUNT_ACT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainFrame"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CounterActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".SettsActivity"
+            android:label="Настройки"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".LoginActivity">
+
+
+
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">TestApp</string>
+
+    <string name="title_activity_main_frame">MainFrame</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label">Счетчик посетителей</string>
+    <string name="tenDays">10 дней:</string>
+    <string name="thirtyDays">30 дней:</string>
+    <string name="currentMonth">Текущий месяц:</string>
+    <string name="pastMonth">Предыдущий месяц:</string>
+    <string name="NumberOfVisitors">Количество посетителей:</string>
+    <string name="counterInsert">Ввести показания</string>
+    <string name="counterOut">Вывести показания</string>
+    <string name="dateAndCount">Выберите дату и текущие показания</string>
+    <string name="applyDate">Записать</string>
+    <string name="Setts">Настройки</string>
+    <string name="loginTrip">Логин</string>
+    <string name="passTrip">Пароль</string>
+    <string name="loginBtn">Войти</string>
+    <string name="title_activity_login">AuthAct</string>
+</resources>

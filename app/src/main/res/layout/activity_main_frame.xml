@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".MainFrame">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="start|center_horizontal"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:paddingBottom="10dp"
+            android:text="@string/NumberOfVisitors"
+            android:textColor="#DE000000"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="301dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:background="#1F000000" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginTop="5dp"
+            android:background="#ffffff"
+            android:divider="#00000000"
+            android:dividerHeight="5dp" />
+
+        <View
+            android:layout_width="301dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_margin="7dp"
+            android:background="#1F000000" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="10dp"
+                        android:text="@string/tenDays"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/textViewTenDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTurquoise"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="301dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="40dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="10dp"
+                        android:text="@string/thirtyDays"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/textViewThirtyDays"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTurquoise"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="301dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="40dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/currentMonth"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/textViewCurrMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTurquoise"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="301dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="40dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/pastMonth"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/textViewPastMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTurquoise"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/insertBtn"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_weight="1"
+            android:background="@drawable/bordershadow"
+            android:onClick="insertBtn"
+            android:text="@string/counterInsert"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/updBtn"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_weight="1"
+            android:background="@drawable/bordershadow"
+            android:onClick="updBtn"
+            android:text="@string/counterOut"
+            android:textSize="14sp" />
+    </LinearLayout>
+</RelativeLayout>
