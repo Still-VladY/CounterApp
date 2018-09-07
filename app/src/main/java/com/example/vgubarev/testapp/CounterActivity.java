@@ -31,7 +31,7 @@ public class CounterActivity extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
                         tv.setText("");
-                        db.getJSON(tv, 101, year+"-"+(month+1)+"-"+day,
+                        db.getCountWithDate(tv, 101, year+"-"+(month+1)+"-"+day,
                                 year+"-"+(month+1)+"-"+day, null, "count");
                     }
                 });

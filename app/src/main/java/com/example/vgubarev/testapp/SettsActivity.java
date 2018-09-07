@@ -27,8 +27,6 @@ public class SettsActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainFrame.class);
             startActivity(intent);
         }
-         else {
 
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.vgubarev.testapp;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -25,9 +26,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class DbUpd {
 
-    public void getJSON(final TextView textView, final Integer sql, final String date1, final String date2,
-                        final String cou, final String number) {
 
+    public void getCountWithDate(final TextView textView, final Integer sql, final String date1, final String date2,
+                                final String cou, final String number) {
+
+        @SuppressLint("StaticFieldLeak")
         class SendPostRequest extends AsyncTask<String, Void, String> {
 
             protected void onPreExecute() {
@@ -71,7 +74,7 @@ public class DbUpd {
                                 InputStreamReader(
                                 conn.getInputStream()));
 
-                        StringBuffer sb = new StringBuffer("");
+                        StringBuilder sb = new StringBuilder("");
                         String line;
 
                         while ((line = in.readLine()) != null) {
@@ -84,10 +87,10 @@ public class DbUpd {
                         return sb.toString();
 
                     } else {
-                        return new String("false : " + responseCode);
+                        return "false : " + responseCode;
                     }
                 } catch (Exception e) {
-                    return new String("Exception: " + e.getMessage());
+                    return "Exception: " + e.getMessage();
                 }
 
             }
@@ -106,9 +109,88 @@ public class DbUpd {
         getJSON.execute();
     }
 
-    public void postJSON(final Integer sql, final String date1, final String date2,
+    public void getCountWithoutDate(final TextView textView, final Integer sql, final String number) {
+
+        @SuppressLint("StaticFieldLeak")
+        class SendPostRequest extends AsyncTask<String, Void, String> {
+
+            protected void onPreExecute() {
+            }
+
+            protected String doInBackground(String... arg0) {
+
+                try {
+
+                    URL url = new URL("http://46.149.225.24:8081/counter/testing.php");
+
+                    //URL url = new URL("http://192.168.100.23:8081/counter/testing.php");
+                    JSONObject postDataParams = new JSONObject();
+                    postDataParams.put("sql", sql);
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout(15000);
+
+                    conn.setConnectTimeout(15000);
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+
+                    OutputStream os = conn.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+                    writer.write(getPostDataString(postDataParams));
+
+                    writer.flush();
+                    writer.close();
+                    os.close();
+
+                    int responseCode = conn.getResponseCode();
+
+                    if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                        BufferedReader in = new BufferedReader(new
+                                InputStreamReader(
+                                conn.getInputStream()));
+
+                        StringBuilder sb = new StringBuilder("");
+                        String line;
+
+                        while ((line = in.readLine()) != null) {
+
+                            sb.append(line);
+                            break;
+                        }
+
+                        in.close();
+                        return sb.toString();
+
+                    } else {
+                        return "false : " + responseCode;
+                    }
+                } catch (Exception e) {
+                    return "Exception: " + e.getMessage();
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+
+                try {
+                    loadIntoTextView(result, textView, number);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        SendPostRequest getJSON = new SendPostRequest();
+        getJSON.execute();
+    }
+
+    public void postCount(final Integer sql, final String date1, final String date2,
                          final String cou, final String newCou) {
 
+        @SuppressLint("StaticFieldLeak")
         class SendPostRequest extends AsyncTask<String, Void, String> {
 
             protected void onPreExecute() {
@@ -153,7 +235,7 @@ public class DbUpd {
                                 InputStreamReader(
                                 conn.getInputStream()));
 
-                        StringBuffer sb = new StringBuffer("");
+                        StringBuilder sb = new StringBuilder("");
                         String line;
 
                         while ((line = in.readLine()) != null) {
@@ -166,10 +248,10 @@ public class DbUpd {
                         return sb.toString();
 
                     } else {
-                        return new String("false : " + responseCode);
+                        return "false : " + responseCode;
                     }
                 } catch (Exception e) {
-                    return new String("Exception: " + e.getMessage());
+                    return "Exception: " + e.getMessage();
                 }
 
             }
@@ -182,7 +264,7 @@ public class DbUpd {
         getJSON.execute();
     }
 
-    public String getPostDataString(JSONObject params) throws Exception {
+    private String getPostDataString(JSONObject params) throws Exception {
 
         StringBuilder result = new StringBuilder();
         boolean first = true;

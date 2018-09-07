@@ -1,5 +1,6 @@
 package com.example.vgubarev.testapp;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,11 +58,11 @@ public class MainFrame extends AppCompatActivity {
 
 
         DbUpd upd = new DbUpd();
-        upd.getJSON(textViewCurr, 99, null, null, null, "count");
-        upd.getJSON(textViewPast, 98, null, null, null, "count");
-        upd.getJSON(textView10Days, 10, null, null, null, "count");
-        upd.getJSON(textView30Days, 30, null, null, null, "count");
-        getJSON(listView, 777, "count", "current");
+        upd.getCountWithoutDate(textViewCurr, 99, "count");
+        upd.getCountWithoutDate(textViewPast, 98, "count");
+        upd.getCountWithoutDate(textView10Days, 10,  "count");
+        upd.getCountWithoutDate(textView30Days, 30,  "count");
+        getCountToListView(listView);
         final Intent intent = new Intent(this, MainFrame.class);
 
 
@@ -94,9 +95,9 @@ public class MainFrame extends AppCompatActivity {
                 ad.setNeutralButton(button2String, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         DbUpd db = new DbUpd();
-                        db.postJSON(111, date, null, count, null);
+                        db.postCount(111, date, null, count, null);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), "Удалено!", Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "Удалено!", Toast.LENGTH_LONG).show();
                     }
                 });
                 ad.setNegativeButton(button3String, new DialogInterface.OnClickListener() {
@@ -107,8 +108,8 @@ public class MainFrame extends AppCompatActivity {
                         dialog.setContentView(R.layout.date_new_dialog);
                         dialog.setTitle("Редактирование");
 
-                        Button closeButton = (Button) dialog.findViewById(R.id.closeNewDateBtn);
-                        Button okButton = (Button) dialog.findViewById(R.id.okNewDateBtn);
+                        Button closeButton = dialog.findViewById(R.id.closeNewDateBtn);
+                        Button okButton = dialog.findViewById(R.id.okNewDateBtn);
 
                         closeButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -120,13 +121,13 @@ public class MainFrame extends AppCompatActivity {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.newDatePicker);
-                                EditText editText = (EditText) dialog.findViewById(R.id.editNewDate);
+                                DatePicker datePicker = dialog.findViewById(R.id.newDatePicker);
+                                EditText editText = dialog.findViewById(R.id.editNewDate);
                                 String day = Integer.toString(datePicker.getDayOfMonth());
                                 String month = Integer.toString(datePicker.getMonth() + 1);
                                 String year = Integer.toString(datePicker.getYear());
                                 DbUpd db = new DbUpd();
-                                db.postJSON(112, date, year + "-" + month + "-" + day, count, editText.getText().toString());
+                                db.postCount(112, date, year + "-" + month + "-" + day, count, editText.getText().toString());
                                 startActivity(intent);
                             }
                         });
@@ -203,8 +204,9 @@ public class MainFrame extends AppCompatActivity {
     }
 
 
-    private void getJSON(final ListView listView, final Integer sql, final String number, final String date) {
+    private void getCountToListView(final ListView listView) {
 
+        @SuppressLint("StaticFieldLeak")
         class SendPostRequest extends AsyncTask<String, Void, String> {
 
             protected void onPreExecute() {
@@ -218,7 +220,7 @@ public class MainFrame extends AppCompatActivity {
 
                     //URL url = new URL("http://192.168.100.23:8081/counter/testing.php");
                     JSONObject postDataParams = new JSONObject();
-                    postDataParams.put("sql", sql);
+                    postDataParams.put("sql", (Integer) 777);
 
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setReadTimeout(15000);
@@ -245,7 +247,7 @@ public class MainFrame extends AppCompatActivity {
                                 InputStreamReader(
                                 conn.getInputStream()));
 
-                        StringBuffer sb = new StringBuffer("");
+                        StringBuilder sb = new StringBuilder("");
                         String line;
 
                         while ((line = in.readLine()) != null) {
@@ -258,10 +260,10 @@ public class MainFrame extends AppCompatActivity {
                         return sb.toString();
 
                     } else {
-                        return new String("false : " + responseCode);
+                        return "false : " + responseCode;
                     }
                 } catch (Exception e) {
-                    return new String("Exception: " + e.getMessage());
+                    return "Exception: " + e.getMessage();
                 }
 
             }
@@ -270,7 +272,7 @@ public class MainFrame extends AppCompatActivity {
             protected void onPostExecute(String result) {
 
                 try {
-                    loadIntoTextView(result, listView, number, date);
+                    loadIntoTextView(result, listView);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -304,22 +306,22 @@ public class MainFrame extends AppCompatActivity {
         return result.toString().trim();
     }
 
-    private void loadIntoTextView(String json, ListView listView, String number, String date) throws JSONException {
+    private void loadIntoTextView(String json, ListView listView) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         String[] mass = new String[jsonArray.length()];
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
-            String inputDate = obj.getString(date).substring(0, 10);
+            String inputDate = obj.getString("current").substring(0, 10);
             String getYear = inputDate.substring(0, 4);
             String getMonth = inputDate.substring(5, 7);
             String getDay = inputDate.substring(8, 10);
-            String getCount = obj.getString(number);
+            String getCount = obj.getString("count");
 
             mass[i] = "" + getDay + "." + getMonth + "." + getYear;
             mass[i] += ": " + getCount;
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item_view, mass);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item_view, mass);
         listView.setAdapter(arrayAdapter);
     }
 }

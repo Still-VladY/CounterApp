@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         String year = Integer.toString(datePicker.getYear());
         if (editText.length()>0) {
             DbUpd db = new DbUpd();
-            db.getJSON(tv,999, year+"-"+month+"-"+day, null, editText.getText().toString(),"count");
+            db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, editText.getText().toString(),"count");
             Intent intent = new Intent(this, MainFrame.class);
             startActivity(intent);
         } else {

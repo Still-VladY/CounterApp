@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center_horizontal|center_vertical"
-        android:hint="@string/loginTrip" />
+        android:hint="@string/loginTrip"
+        android:inputType="text" />
     <EditText
         android:padding="20dp"
         android:id="@+id/pass"
