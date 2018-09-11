@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "768882092354",
+    "firebase_url": "https://rainbowcounter-3e8db.firebaseio.com",
+    "project_id": "rainbowcounter-3e8db",
+    "storage_bucket": "rainbowcounter-3e8db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768882092354:android:8cfce7ec7b69082d",
+        "android_client_info": {
+          "package_name": "com.example.vgubarev.testapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "768882092354-ofg54gtu5hn7vi5cefip173bfe0a60ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvmcgR6chYTQFzm2or3Yec-5YR3zIul_4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
