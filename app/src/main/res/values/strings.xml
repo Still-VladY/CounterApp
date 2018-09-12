@@ -14,7 +14,7 @@
     <string name="NumberOfVisitors">Количество посетителей:</string>
     <string name="counterInsert">Ввести показания</string>
     <string name="counterOut">Вывести показания</string>
-    <string name="dateAndCount">Выберите дату и текущие показания</string>
+    <string name="dateAndCount">Введите показания через тире</string>
     <string name="applyDate">Записать</string>
     <string name="Setts">Настройки</string>
     <string name="title_activity_login">AuthAct</string>
@@ -36,7 +36,7 @@
     <string name="loading">Загрузка…</string>
     <string name="custom_token">Custom Token</string>
     <string name="signed_in">Signed In</string>
-    <string name="signed_out">Вход не произведен</string>
+    <string name="signed_out">Вход не выполнен</string>
     <string name="token_null">Token: null</string>
     <string name="hint_email">Почтовый адрес</string>
     <string name="hint_password">Пароль</string>

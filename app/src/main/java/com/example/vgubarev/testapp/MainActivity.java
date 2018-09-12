@@ -6,13 +6,19 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +26,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) hideKeyboard();
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
     public void onClick(View v) {
+        showProgressDialog();
         DatePicker datePicker = findViewById(R.id.dateCount);
         EditText editText = findViewById(R.id.visitCountEdit);
         TextView tv = new TextView(this);
@@ -29,22 +47,21 @@ public class MainActivity extends AppCompatActivity {
         String month = Integer.toString(datePicker.getMonth() + 1);
         String year = Integer.toString(datePicker.getYear());
 
-        //пробный код
         String str = editText.getText().toString();
-        String[] numbers = str.split(" ");
+        String[] numbers = str.split("-");
+
         int res = 0;
 
 
         for (String s : numbers) {
             res += Integer.parseInt(s);
         }
-        Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
 
-        //пробный код
-        /*if (editText.length()>0) {
+        if (editText.length()>0) {
             DbUpd db = new DbUpd();
-            db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, editText.getText().toString(),"count");
+            db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, String.valueOf(res),"count");
             Intent intent = new Intent(this, MainFrame.class);
+            hideProgressDialog();
             startActivity(intent);
         } else {
             Context context = MainActivity.this;
@@ -58,6 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             ad.show();
-        }*/
+        }
     }
 }

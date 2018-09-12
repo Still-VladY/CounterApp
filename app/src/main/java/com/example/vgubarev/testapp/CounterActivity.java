@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-public class CounterActivity extends AppCompatActivity {
+public class CounterActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,11 @@ public class CounterActivity extends AppCompatActivity {
                 new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker datePicker, int year, int month, int day) {
+                        showProgressDialog();
                         tv.setText("");
                         db.getCountWithDate(tv, 101, year+"-"+(month+1)+"-"+day,
                                 year+"-"+(month+1)+"-"+day, null, "count");
+                        hideProgressDialog();
                     }
                 });
     }

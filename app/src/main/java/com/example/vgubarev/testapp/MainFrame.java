@@ -41,7 +41,7 @@ import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class MainFrame extends AppCompatActivity {
+public class MainFrame extends BaseActivity {
 
     private AlertDialog.Builder ad;
     private Context context;
@@ -126,6 +126,7 @@ public class MainFrame extends AppCompatActivity {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                showProgressDialog();
                                 DatePicker datePicker = dialog.findViewById(R.id.newDatePicker);
                                 EditText editText = dialog.findViewById(R.id.editNewDate);
                                 String day = Integer.toString(datePicker.getDayOfMonth());
@@ -133,7 +134,9 @@ public class MainFrame extends AppCompatActivity {
                                 String year = Integer.toString(datePicker.getYear());
                                 DbUpd db = new DbUpd();
                                 db.postCount(112, date, year + "-" + month + "-" + day, count, editText.getText().toString());
+                                hideProgressDialog();
                                 startActivity(intent);
+
                             }
                         });
 
