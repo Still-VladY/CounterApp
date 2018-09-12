@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,9 +26,22 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = new TextView(this);
 
         String day = Integer.toString(datePicker.getDayOfMonth());
-        String month = Integer.toString(datePicker.getMonth()+1);
+        String month = Integer.toString(datePicker.getMonth() + 1);
         String year = Integer.toString(datePicker.getYear());
-        if (editText.length()>0) {
+
+        //пробный код
+        String str = editText.getText().toString();
+        String[] numbers = str.split(" ");
+        int res = 0;
+
+
+        for (String s : numbers) {
+            res += Integer.parseInt(s);
+        }
+        Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
+
+        //пробный код
+        /*if (editText.length()>0) {
             DbUpd db = new DbUpd();
             db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, editText.getText().toString(),"count");
             Intent intent = new Intent(this, MainFrame.class);
@@ -44,6 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             ad.show();
-        }
+        }*/
     }
 }

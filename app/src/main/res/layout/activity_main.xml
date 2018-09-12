@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:hint="@string/dateAndCount"
-        android:inputType="number"
+
         android:textSize="20sp" />
 
     <DatePicker

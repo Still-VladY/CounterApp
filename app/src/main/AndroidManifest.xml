@@ -37,7 +37,9 @@
             android:name=".MainFrame"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme">
+
+        </activity>
         <activity
             android:name=".CounterActivity"
             android:screenOrientation="portrait" />
@@ -45,8 +47,8 @@
             android:name=".SettsActivity"
             android:label="Настройки"
             android:screenOrientation="portrait" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".FireBaseOaut">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

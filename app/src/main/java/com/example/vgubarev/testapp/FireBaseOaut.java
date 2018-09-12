@@ -1,5 +1,6 @@
 package com.example.vgubarev.testapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -45,7 +46,6 @@ public class FireBaseOaut extends BaseActivity implements
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
-        findViewById(R.id.verifyEmailButton).setOnClickListener(this);
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
@@ -83,7 +83,7 @@ public class FireBaseOaut extends BaseActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(FireBaseOaut.this, "Authentication failed.",
+                            Toast.makeText(FireBaseOaut.this, "Ошибка регистрации",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -117,7 +117,7 @@ public class FireBaseOaut extends BaseActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(FireBaseOaut.this, "Authentication failed.",
+                            Toast.makeText(FireBaseOaut.this, "Ошибка авторизации",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -139,43 +139,12 @@ public class FireBaseOaut extends BaseActivity implements
         updateUI(null);
     }
 
-    private void sendEmailVerification() {
-        // Disable button
-        findViewById(R.id.verifyEmailButton).setEnabled(false);
-
-        // Send verification email
-        // [START send_email_verification]
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                        findViewById(R.id.verifyEmailButton).setEnabled(true);
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(FireBaseOaut.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(FireBaseOaut.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END send_email_verification]
-    }
-
     private boolean validateForm() {
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
+            mEmailField.setError("Введите вашу почту");
             valid = false;
         } else {
             mEmailField.setError(null);
@@ -183,7 +152,7 @@ public class FireBaseOaut extends BaseActivity implements
 
         String password = mPasswordField.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required.");
+            mPasswordField.setError("Введите пароль");
             valid = false;
         } else {
             mPasswordField.setError(null);
@@ -194,16 +163,22 @@ public class FireBaseOaut extends BaseActivity implements
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
+
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
+            /*mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
+                    user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), "Добро пожаловать, " + user.getEmail(),
+                    Toast.LENGTH_SHORT).show();
 
-            findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
+            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+            */
+            Intent intent = new Intent(getApplicationContext(), MainFrame.class);
+            startActivity(intent);
+
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -212,6 +187,8 @@ public class FireBaseOaut extends BaseActivity implements
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
+
+
     }
 
     @Override
@@ -223,8 +200,6 @@ public class FireBaseOaut extends BaseActivity implements
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.signOutButton) {
             signOut();
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification();
         }
     }
 }

@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,12 +45,14 @@ public class MainFrame extends AppCompatActivity {
 
     private AlertDialog.Builder ad;
     private Context context;
+    private FirebaseUser user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         setContentView(R.layout.activity_main_frame);
         TextView textViewCurr = findViewById(R.id.textViewCurrMonth);
@@ -60,8 +65,8 @@ public class MainFrame extends AppCompatActivity {
         DbUpd upd = new DbUpd();
         upd.getCountWithoutDate(textViewCurr, 99, "count");
         upd.getCountWithoutDate(textViewPast, 98, "count");
-        upd.getCountWithoutDate(textView10Days, 10,  "count");
-        upd.getCountWithoutDate(textView30Days, 30,  "count");
+        upd.getCountWithoutDate(textView10Days, 10, "count");
+        upd.getCountWithoutDate(textView30Days, 30, "count");
         getCountToListView(listView);
         final Intent intent = new Intent(this, MainFrame.class);
 
@@ -142,30 +147,22 @@ public class MainFrame extends AppCompatActivity {
 
                     }
                 });
-                Bundle arg = getIntent().getExtras();
-                if (arg != null) {
-                    Boolean check = arg.getBoolean("check");
 
-                    //ad.setTitle(String.valueOf(check));
-
-                    if (check) {
+                if (user != null) {
+                    if (user.getUid().equals("JGjvN7V2eBXAlUn03QDrDmugEw23"))
                         ad.show();
-                    }
-                } else ad.show();
+                }
+
             }
         });
 
     }
 
     public void insertBtn(View v) {
-        Bundle arg = getIntent().getExtras();
-        if (arg!=null) {
-            Boolean check = arg.getBoolean("check");
-            if (check) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            } else {
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            if (!user.getUid().equals("JGjvN7V2eBXAlUn03QDrDmugEw23")) {
                 AlertDialog.Builder adialog = new AlertDialog.Builder(this);
                 adialog.setTitle("Внимание!").setMessage("Данная учетная запись только для просмотра.").setCancelable(true)
                         .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
@@ -174,13 +171,15 @@ public class MainFrame extends AppCompatActivity {
 
                             }
                         }).show();
-
+                Button instBtn = findViewById(R.id.insertBtn);
+                instBtn.setEnabled(false);
+            } else {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }
-        } else {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
         }
     }
+
 
     public void updBtn(View v) {
         Intent intent = new Intent(this, CounterActivity.class);
