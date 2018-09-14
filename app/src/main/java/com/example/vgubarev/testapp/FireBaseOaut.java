@@ -1,5 +1,6 @@
 package com.example.vgubarev.testapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class FireBaseOaut extends BaseActivity implements
@@ -22,47 +28,39 @@ public class FireBaseOaut extends BaseActivity implements
 
     private static final String TAG = "EmailPassword";
 
-    private TextView mStatusTextView;
+    private TextView mStatusTextView; //объявляем поля и авторизацию
     private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire_base_oaut);
 
-        // Views
-        mStatusTextView = findViewById(R.id.status);
+        mStatusTextView = findViewById(R.id.status);  //определяем поля по id
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
 
-        // Buttons
-        findViewById(R.id.emailSignInButton).setOnClickListener(this);
+        findViewById(R.id.emailSignInButton).setOnClickListener(this);  //определяем кнопки, добавляем слушателей
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
 
-        // [START initialize_auth]
-        mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
+        mAuth = FirebaseAuth.getInstance();   //инициализируем авторизацию
     }
 
-    // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Проверяем зареган ли юзер
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    // [END on_start_check_user]
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password) { //Проверка на заполненность полей
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
@@ -70,16 +68,21 @@ public class FireBaseOaut extends BaseActivity implements
 
         showProgressDialog();
 
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)    //создаем нвоого пользователя, если успешно - кидаем на форму с подтверждением входа, не успешно - ошибка
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @SuppressLint("StringFormatMatches")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
+                                    user.getEmail()));
+
+                            findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
+                            findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
+                            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -88,12 +91,9 @@ public class FireBaseOaut extends BaseActivity implements
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
                         hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
     }
 
     private void signIn(String email, String password) {
@@ -104,18 +104,15 @@ public class FireBaseOaut extends BaseActivity implements
 
         showProgressDialog();
 
-        // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
+        mAuth.signInWithEmailAndPassword(email, password) //Авторизация по логину и паролю, если успешно, перекидываем на главную активити, не успешно - ошибка
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(FireBaseOaut.this, "Ошибка авторизации",
                                     Toast.LENGTH_SHORT).show();
@@ -123,23 +120,20 @@ public class FireBaseOaut extends BaseActivity implements
                         }
 
 
-                        // [START_EXCLUDE]
                         if (!task.isSuccessful()) {
                             mStatusTextView.setText(R.string.auth_failed);
                         }
                         hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
-    private void signOut() {
+    private void signOut() {  //метод выхода
         mAuth.signOut();
         updateUI(null);
     }
 
-    private boolean validateForm() {
+    private boolean validateForm() {  //проверка на заполненность полей
         boolean valid = true;
 
         String email = mEmailField.getText().toString();
@@ -161,23 +155,37 @@ public class FireBaseOaut extends BaseActivity implements
         return valid;
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(final FirebaseUser user) { //обновление инфы о зареганом юзере, перекидывание на активити со счетчиками
         hideProgressDialog();
 
         if (user != null) {
-            /*mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
-            findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), "Добро пожаловать, " + user.getEmail(),
-                    Toast.LENGTH_SHORT).show();
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("users");
+            db.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("StringFormatMatches")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    showProgressDialog();
+                    String val = dataSnapshot.child(user.getUid()).child("access").getValue(String.class);
+                    hideProgressDialog();
+                    if (val != null) {
+                        Intent intent = new Intent(getApplicationContext(), MainFrame.class);
+                        startActivity(intent);
+                    } else {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
+                                user.getEmail()));
 
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
-            */
-            Intent intent = new Intent(getApplicationContext(), MainFrame.class);
-            startActivity(intent);
+                        findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
+                        findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
+                        findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
         } else {
             mStatusTextView.setText(R.string.signed_out);
@@ -187,7 +195,6 @@ public class FireBaseOaut extends BaseActivity implements
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
-
 
     }
 

@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -23,6 +25,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +67,6 @@ public class MainFrame extends BaseActivity {
         TextView textView10Days = findViewById(R.id.textViewTenDays);
         TextView textView30Days = findViewById(R.id.textViewThirtyDays);
         final ListView listView = findViewById(R.id.listView);
-
 
         DbUpd upd = new DbUpd();
         upd.getCountWithoutDate(textViewCurr, 99, "count");
@@ -139,23 +145,29 @@ public class MainFrame extends BaseActivity {
 
                             }
                         });
-
                         dialog.show();
                     }
                 });
 
                 ad.setCancelable(true);
                 ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    public void onCancel(DialogInterface dialog) {
+                    public void onCancel(DialogInterface dialog) { }
+                });
+
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference("users");
+                db.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String val = dataSnapshot.child(user.getUid()).child("access").getValue(String.class);
+                        if (val.equals("admin")) {
+                            ad.show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-
-                if (user != null) {
-                    if (user.getUid().equals("JGjvN7V2eBXAlUn03QDrDmugEw23"))
-                        ad.show();
-                }
-
             }
         });
 
@@ -165,21 +177,27 @@ public class MainFrame extends BaseActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            if (!user.getUid().equals("JGjvN7V2eBXAlUn03QDrDmugEw23")) {
-                AlertDialog.Builder adialog = new AlertDialog.Builder(this);
-                adialog.setTitle("Внимание!").setMessage("Данная учетная запись только для просмотра.").setCancelable(true)
-                        .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("users");
 
-                            }
-                        }).show();
-                Button instBtn = findViewById(R.id.insertBtn);
-                instBtn.setEnabled(false);
-            } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String val = dataSnapshot.child(user.getUid()).child("access").getValue(String.class);
+                    if (val.equals("user")) {
+                        AlertDialog.Builder adialog = new AlertDialog.Builder(MainFrame.this);
+                        adialog.setTitle("Внимание!").setMessage("Операция требует повышения прав.").setCancelable(true)
+                                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) { }
+                                }).show();
+                    } else if (val.equals("admin")) {
+                        Intent intent = new Intent(MainFrame.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) { }
+            });
         }
     }
 
