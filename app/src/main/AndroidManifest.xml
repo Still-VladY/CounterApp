@@ -35,8 +35,6 @@
         </activity>
         <activity
             android:name=".MainFrame"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
 
         </activity>
@@ -49,13 +47,20 @@
             android:screenOrientation="portrait" />
         <activity android:name=".FireBaseOaut">
 
+        </activity>
+        <activity android:name=".BaseActivity" />
+        <activity
+            android:name=".StartAcrivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity"/>
     </application>
 
 </manifest>

@@ -58,6 +58,7 @@ public class FireBaseOaut extends BaseActivity implements
         // Проверяем зареган ли юзер
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        hideProgressDialog();
     }
 
     private void createAccount(String email, String password) { //Проверка на заполненность полей
@@ -102,8 +103,6 @@ public class FireBaseOaut extends BaseActivity implements
             return;
         }
 
-        showProgressDialog();
-
         mAuth.signInWithEmailAndPassword(email, password) //Авторизация по логину и паролю, если успешно, перекидываем на главную активити, не успешно - ошибка
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -123,7 +122,6 @@ public class FireBaseOaut extends BaseActivity implements
                         if (!task.isSuccessful()) {
                             mStatusTextView.setText(R.string.auth_failed);
                         }
-                        hideProgressDialog();
                     }
                 });
     }
@@ -156,19 +154,18 @@ public class FireBaseOaut extends BaseActivity implements
     }
 
     private void updateUI(final FirebaseUser user) { //обновление инфы о зареганом юзере, перекидывание на активити со счетчиками
-        hideProgressDialog();
 
         if (user != null) {
+            showProgressDialog();
 
             DatabaseReference db = FirebaseDatabase.getInstance().getReference("users");
             db.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("StringFormatMatches")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    showProgressDialog();
                     String val = dataSnapshot.child(user.getUid()).child("access").getValue(String.class);
-                    hideProgressDialog();
                     if (val != null) {
+                        hideProgressDialog();
                         Intent intent = new Intent(getApplicationContext(), MainFrame.class);
                         startActivity(intent);
                     } else {
