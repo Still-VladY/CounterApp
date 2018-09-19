@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Main.MainActivity"
             android:label="Ввод показаний"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -34,23 +34,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainFrame"
+            android:name=".Main.MainFrame"
             android:theme="@style/AppTheme">
 
         </activity>
         <activity
-            android:name=".CounterActivity"
+            android:name=".Main.CounterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SettsActivity"
+            android:name=".Settings.SettsActivity"
             android:label="Настройки"
             android:screenOrientation="portrait" />
-        <activity android:name=".FireBaseOaut">
+        <activity android:name=".Starting.FireBaseOaut">
 
         </activity>
-        <activity android:name=".BaseActivity" />
+        <activity android:name=".Starting.BaseActivity" />
         <activity
-            android:name=".StartAcrivity"
+            android:name=".Starting.StartAcrivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/SplashTheme"
             android:screenOrientation="portrait">

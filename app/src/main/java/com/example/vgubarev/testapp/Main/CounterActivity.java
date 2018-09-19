@@ -1,15 +1,12 @@
-package com.example.vgubarev.testapp;
+package com.example.vgubarev.testapp.Main;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.example.vgubarev.testapp.DatebaseParsing.DbUpd;
+import com.example.vgubarev.testapp.R;
+import com.example.vgubarev.testapp.Starting.BaseActivity;
 
 import java.util.Calendar;
 
