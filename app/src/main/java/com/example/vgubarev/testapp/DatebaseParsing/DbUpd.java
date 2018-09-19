@@ -7,6 +7,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vgubarev.testapp.Main.MainFrame;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +30,7 @@ public class DbUpd {
 
 
     public void getCountWithDate(final TextView textView, final Integer sql, final String date1, final String date2,
-                                final String cou, final String number) {
+                                final String cou, final String number, final Boolean bool) {
 
         @SuppressLint("StaticFieldLeak")
         class SendPostRequest extends AsyncTask<String, Void, String> {
@@ -42,7 +44,6 @@ public class DbUpd {
 
                     URL url = new URL("http://46.149.225.24:8081/counter/testing.php");
 
-                    //URL url = new URL("http://192.168.100.23:8081/counter/testing.php");
                     JSONObject postDataParams = new JSONObject();
                     postDataParams.put("sql", sql);
                     postDataParams.put("start", date1);
@@ -99,7 +100,7 @@ public class DbUpd {
             protected void onPostExecute(String result) {
 
                 try {
-                    loadIntoTextView(result, textView, number);
+                    loadIntoTextView(result, textView, number, bool);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -109,7 +110,7 @@ public class DbUpd {
         getJSON.execute();
     }
 
-    public void getCountWithoutDate(final TextView textView, final Integer sql, final String number) {
+    public void getCountWithoutDate(final TextView textView, final Integer sql, final String number, final Boolean bool) {
 
         @SuppressLint("StaticFieldLeak")
         class SendPostRequest extends AsyncTask<String, Void, String> {
@@ -123,7 +124,6 @@ public class DbUpd {
 
                     URL url = new URL("http://46.149.225.24:8081/counter/testing.php");
 
-                    //URL url = new URL("http://192.168.100.23:8081/counter/testing.php");
                     JSONObject postDataParams = new JSONObject();
                     postDataParams.put("sql", sql);
 
@@ -177,7 +177,7 @@ public class DbUpd {
             protected void onPostExecute(String result) {
 
                 try {
-                    loadIntoTextView(result, textView, number);
+                    loadIntoTextView(result, textView, number, bool);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -287,16 +287,23 @@ public class DbUpd {
         return result.toString().trim();
     }
 
-    private void loadIntoTextView(String json, TextView textView, String number) throws JSONException {
+    private void loadIntoTextView(String json, TextView textView, String number, Boolean bool) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
 
             String count = obj.getString(number);
-            int newCount = Integer.valueOf(count)/2;
-            String rightCount = String.valueOf(newCount);
-            textView.append(rightCount);
+            if (!count.equals("null")) {
+                if (bool) {
+                    int newCount = Integer.valueOf(count) / 2;
+                    String rightCount = String.valueOf(newCount);
+                    textView.append(rightCount);
+                } else textView.append(count);
+            } else {
+                count = "Нет показаний за эту дату";
+                textView.append(count);
+            }
         }
     }
 }

@@ -6,4 +6,9 @@
         android:orderInCategory="1"
         android:title="@string/Setts"
         />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="2"
+        android:title="@string/about"
+        />
 </menu>

@@ -30,7 +30,7 @@ public class CounterActivity extends BaseActivity {
                         showProgressDialog();
                         tv.setText("");
                         db.getCountWithDate(tv, 101, year+"-"+(month+1)+"-"+day,
-                                year+"-"+(month+1)+"-"+day, null, "count");
+                                year+"-"+(month+1)+"-"+day, null, "count", true);
                         hideProgressDialog();
                     }
                 });

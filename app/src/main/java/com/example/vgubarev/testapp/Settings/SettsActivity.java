@@ -38,7 +38,6 @@ public class SettsActivity extends AppCompatActivity {
         mAuth.signOut();
         user = null;
         Intent intent = new Intent(this, FireBaseOaut.class);
-        //intent.putExtra("isRunning", true);
         startActivity(intent);
     }
 

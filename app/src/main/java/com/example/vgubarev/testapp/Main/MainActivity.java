@@ -57,10 +57,11 @@ public class MainActivity extends BaseActivity {
 
         if (editText.length()>0) {
             DbUpd db = new DbUpd();
-            db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, String.valueOf(res),"count");
+            db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, String.valueOf(res),"count", true);
             Intent intent = new Intent(this, MainFrame.class);
             hideProgressDialog();
             startActivity(intent);
+            finish();
         } else {
             Context context = MainActivity.this;
             AlertDialog.Builder ad = new AlertDialog.Builder(context);

@@ -169,6 +169,11 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTurquoise"
                         android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/invisibleTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

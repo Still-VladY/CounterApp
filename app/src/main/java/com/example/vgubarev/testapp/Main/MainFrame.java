@@ -55,6 +55,7 @@ public class MainFrame extends BaseActivity {
     private AlertDialog.Builder ad;
     private Context context;
     private FirebaseUser user;
+    private StringBuilder strb = new StringBuilder();
 
 
     @Override
@@ -63,25 +64,27 @@ public class MainFrame extends BaseActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+
         setContentView(R.layout.activity_main_frame);
-        TextView textViewCurr = findViewById(R.id.textViewCurrMonth);
+        final TextView textViewCurr = findViewById(R.id.textViewCurrMonth);
         TextView textViewPast = findViewById(R.id.textViewPastMonth);
         TextView textView10Days = findViewById(R.id.textViewTenDays);
         TextView textView30Days = findViewById(R.id.textViewThirtyDays);
         final ListView listView = findViewById(R.id.listView);
 
         DbUpd upd = new DbUpd();
-        upd.getCountWithoutDate(textViewCurr, 99, "count");
-        upd.getCountWithoutDate(textViewPast, 98, "count");
-        upd.getCountWithoutDate(textView10Days, 10, "count");
-        upd.getCountWithoutDate(textView30Days, 30, "count");
+        upd.getCountWithoutDate(textViewCurr, 99, "count", true);
+        upd.getCountWithoutDate(textViewPast, 98, "count", true);
+        upd.getCountWithoutDate(textView10Days, 10, "count", true);
+        upd.getCountWithoutDate(textView30Days, 30, "count", true);
         getCountToListView(listView);
         final Intent intent = new Intent(this, MainFrame.class);
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+                                    int position, final long id) {
+                final DbUpd db = new DbUpd();
                 String selectedFromList = (String) listView.getItemAtPosition(position);
 
                 context = MainFrame.this;
@@ -95,7 +98,9 @@ public class MainFrame extends BaseActivity {
                 String getMonth = dateDialog.substring(3, 5);
                 String getYear = dateDialog.substring(6, 10);
                 final String date = getYear + "-" + getMonth + "-" + getDay;
-                final String count = selectedFromList.substring(12);
+                final TextView textView = findViewById(R.id.invisibleTV);
+                textView.setText("");
+                db.getCountWithDate(textView, 101, date, date, null, "count", false);
 
                 ad = new AlertDialog.Builder(context);
                 ad.setTitle(title);  // заголовок
@@ -107,8 +112,8 @@ public class MainFrame extends BaseActivity {
                 });
                 ad.setNeutralButton(button2String, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        DbUpd db = new DbUpd();
-                        db.postCount(111, date, null, count, null);
+
+                        db.postCount(111, date, null, textView.getText().toString(), null);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), "Удалено!", Toast.LENGTH_LONG).show();
                     }
@@ -134,27 +139,31 @@ public class MainFrame extends BaseActivity {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                showProgressDialog();
                                 DatePicker datePicker = dialog.findViewById(R.id.newDatePicker);
                                 EditText editText = dialog.findViewById(R.id.editNewDate);
 
-                                String str = editText.getText().toString();
-                                String[] numbers = str.split("-");
+                                if (editText.getText().length() > 1) {
 
-                                int res = 0;
 
-                                for (String s : numbers) {
-                                    res += Integer.parseInt(s);
-                                }
+                                    showProgressDialog();
+                                    String str = editText.getText().toString();
+                                    String[] numbers = str.split("-");
 
-                                String day = Integer.toString(datePicker.getDayOfMonth());
-                                String month = Integer.toString(datePicker.getMonth() + 1);
-                                String year = Integer.toString(datePicker.getYear());
-                                DbUpd db = new DbUpd();
-                                db.postCount(112, date, year + "-" + month + "-" + day, count, String.valueOf(res));
-                                hideProgressDialog();
-                                startActivity(intent);
+                                    int res = 0;
 
+                                    for (String s : numbers) {
+                                        res += Integer.parseInt(s);
+                                    }
+
+                                    String day = Integer.toString(datePicker.getDayOfMonth());
+                                    String month = Integer.toString(datePicker.getMonth() + 1);
+                                    String year = Integer.toString(datePicker.getYear());
+                                    DbUpd db = new DbUpd();
+
+                                    db.postCount(112, date, year + "-" + month + "-" + day, textView.getText().toString(), String.valueOf(res));
+                                    hideProgressDialog();
+                                    startActivity(intent);
+                                } else Toast.makeText(getApplicationContext(), "Введите показания!", Toast.LENGTH_SHORT).show();
                             }
                         });
                         dialog.show();
@@ -166,8 +175,8 @@ public class MainFrame extends BaseActivity {
                     public void onCancel(DialogInterface dialog) { }
                 });
 
-                DatabaseReference db = FirebaseDatabase.getInstance().getReference("users");
-                db.addValueEventListener(new ValueEventListener() {
+                DatabaseReference dbR = FirebaseDatabase.getInstance().getReference("users");
+                dbR.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String val = dataSnapshot.child(user.getUid()).child("access").getValue(String.class);
@@ -304,7 +313,7 @@ public class MainFrame extends BaseActivity {
             protected void onPostExecute(String result) {
 
                 try {
-                    loadIntoTextView(result, listView);
+                    loadIntoListView(result, listView);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -313,6 +322,7 @@ public class MainFrame extends BaseActivity {
         SendPostRequest getJSON = new SendPostRequest();
         getJSON.execute();
     }
+
 
     public String getPostDataString(JSONObject params) throws Exception {
 
@@ -338,7 +348,7 @@ public class MainFrame extends BaseActivity {
         return result.toString().trim();
     }
 
-    private void loadIntoTextView(String json, ListView listView) throws JSONException {
+    private void loadIntoListView(String json, ListView listView) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
         String[] mass = new String[jsonArray.length()];
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -357,6 +367,15 @@ public class MainFrame extends BaseActivity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item_view, mass);
         listView.setAdapter(arrayAdapter);
+    }
+
+    public void onDestroy() {
+        moveTaskToBack(true);
+
+        super.onDestroy();
+
+        System.runFinalizersOnExit(true);
+        System.exit(0);
     }
 }
 

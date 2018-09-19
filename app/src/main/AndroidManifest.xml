@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:abdroid="http://schemas.android.com/apk/res-auto"
     package="com.example.vgubarev.testapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -35,9 +34,7 @@
         </activity>
         <activity
             android:name=".Main.MainFrame"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Main.CounterActivity"
             android:screenOrientation="portrait" />
@@ -45,21 +42,20 @@
             android:name=".Settings.SettsActivity"
             android:label="Настройки"
             android:screenOrientation="portrait" />
-        <activity android:name=".Starting.FireBaseOaut">
-
-        </activity>
+        <activity android:name=".Starting.FireBaseOaut" />
         <activity android:name=".Starting.BaseActivity" />
         <activity
             android:name=".Starting.StartAcrivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/SplashTheme"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Settings.About">
+
         </activity>
     </application>
 
