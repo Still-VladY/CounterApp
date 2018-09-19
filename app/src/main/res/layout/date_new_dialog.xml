@@ -16,8 +16,9 @@
         android:id="@+id/editNewDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Количество посетителей"
+        android:hint="Показания через тире"
         android:inputType="number"
+        android:digits="0123456789-"
         android:gravity="center_horizontal"/>
 
     <LinearLayout

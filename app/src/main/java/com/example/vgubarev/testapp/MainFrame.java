@@ -135,11 +135,21 @@ public class MainFrame extends BaseActivity {
                                 showProgressDialog();
                                 DatePicker datePicker = dialog.findViewById(R.id.newDatePicker);
                                 EditText editText = dialog.findViewById(R.id.editNewDate);
+
+                                String str = editText.getText().toString();
+                                String[] numbers = str.split("-");
+
+                                int res = 0;
+
+                                for (String s : numbers) {
+                                    res += Integer.parseInt(s);
+                                }
+
                                 String day = Integer.toString(datePicker.getDayOfMonth());
                                 String month = Integer.toString(datePicker.getMonth() + 1);
                                 String year = Integer.toString(datePicker.getYear());
                                 DbUpd db = new DbUpd();
-                                db.postCount(112, date, year + "-" + month + "-" + day, count, editText.getText().toString());
+                                db.postCount(112, date, year + "-" + month + "-" + day, count, String.valueOf(res));
                                 hideProgressDialog();
                                 startActivity(intent);
 
@@ -336,9 +346,11 @@ public class MainFrame extends BaseActivity {
             String getMonth = inputDate.substring(5, 7);
             String getDay = inputDate.substring(8, 10);
             String getCount = obj.getString("count");
+            int newCount = Integer.valueOf(getCount)/2;
+            String rightCount = String.valueOf(newCount);
 
             mass[i] = "" + getDay + "." + getMonth + "." + getYear;
-            mass[i] += ": " + getCount;
+            mass[i] += ": " + rightCount;
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.list_item_view, mass);

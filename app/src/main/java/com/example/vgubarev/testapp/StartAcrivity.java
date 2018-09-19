@@ -15,6 +15,8 @@ public class StartAcrivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_acrivity);
 
+
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();

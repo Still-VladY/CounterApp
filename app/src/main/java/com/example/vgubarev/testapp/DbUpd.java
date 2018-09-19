@@ -202,7 +202,6 @@ public class DbUpd {
 
                     URL url = new URL("http://46.149.225.24:8081/counter/testing.php");
 
-                    //URL url = new URL("http://192.168.100.23:8081/counter/testing.php");
                     JSONObject postDataParams = new JSONObject();
                     postDataParams.put("sql", sql);
                     postDataParams.put("start", date1);
@@ -295,7 +294,9 @@ public class DbUpd {
             JSONObject obj = jsonArray.getJSONObject(i);
 
             String count = obj.getString(number);
-            textView.append(count);
+            int newCount = Integer.valueOf(count)/2;
+            String rightCount = String.valueOf(newCount);
+            textView.append(rightCount);
         }
     }
 }
