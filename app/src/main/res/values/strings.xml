@@ -2,10 +2,8 @@
     <string name="app_name">TestApp</string>
 
     <string name="title_activity_main_frame">MainFrame</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="label">Счетчик посетителей</string>
     <string name="tenDays">10 дней:</string>
     <string name="thirtyDays">30 дней:</string>
@@ -72,7 +70,6 @@
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
 
-    <string name="next">Далее</string>
-    <string name="back">Назад</string>
+    <string name="back">В главное меню</string>
     <string name="about">О приложении</string>
 </resources>

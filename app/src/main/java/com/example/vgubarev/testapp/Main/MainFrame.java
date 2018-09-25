@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.vgubarev.testapp.DatebaseParsing.DbUpd;
 import com.example.vgubarev.testapp.R;
+import com.example.vgubarev.testapp.Settings.About;
 import com.example.vgubarev.testapp.Settings.SettsActivity;
 import com.example.vgubarev.testapp.Starting.BaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -239,6 +240,10 @@ public class MainFrame extends BaseActivity {
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettsActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_about:
+                Intent intent1 = new Intent(this, About.class);
+                startActivity(intent1);
                 return true;
         }
         return super.onOptionsItemSelected(item);
