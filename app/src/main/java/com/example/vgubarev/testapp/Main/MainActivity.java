@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vgubarev.testapp.DatebaseParsing.DbUpd;
 import com.example.vgubarev.testapp.R;
@@ -36,7 +37,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onClick(View v) {
-        showProgressDialog();
+
         DatePicker datePicker = findViewById(R.id.dateCount);
         EditText editText = findViewById(R.id.visitCountEdit);
         TextView tv = new TextView(this);
@@ -45,35 +46,30 @@ public class MainActivity extends BaseActivity {
         String month = Integer.toString(datePicker.getMonth() + 1);
         String year = Integer.toString(datePicker.getYear());
 
-        String str = editText.getText().toString();
-        String[] numbers = str.split("-");
+        if (editText.getText().length() > 0) {
 
-        int res = 0;
+            String str = editText.getText().toString();
+            String[] numbers = str.split("-");
+
+            int res = 0;
 
 
-        for (String s : numbers) {
-            res += Integer.parseInt(s);
-        }
+            for (String s : numbers) {
+                res += Integer.parseInt(s);
 
-        if (editText.length()>0) {
-            DbUpd db = new DbUpd();
-            db.getCountWithDate(tv,999, year+"-"+month+"-"+day, null, String.valueOf(res),"count", true);
-            Intent intent = new Intent(this, MainFrame.class);
-            hideProgressDialog();
-            startActivity(intent);
-            finish();
-        } else {
-            Context context = MainActivity.this;
-            AlertDialog.Builder ad = new AlertDialog.Builder(context);
-            ad.setTitle("Внимание!");  // заголовок
-            ad.setMessage("Не введено количество посетителей за выбранную дату"); // сообщение
-            String button1String = "OK";
-            ad.setPositiveButton(button1String, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int arg1) {
 
+                if (editText.getText().length() > 0) {
+                    DbUpd db = new DbUpd();
+                    db.getCountWithDate(tv, 999, year + "-" + month + "-" + day, null, String.valueOf(res), "count", true);
+                    Intent intent = new Intent(this, MainFrame.class);
+                    hideProgressDialog();
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Введите показания!", Toast.LENGTH_SHORT).show();
                 }
-            });
-            ad.show();
-        }
+            }
+        } else
+            Toast.makeText(getApplicationContext(), "Введите показания!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -56,7 +56,6 @@ public class MainFrame extends BaseActivity {
     private AlertDialog.Builder ad;
     private Context context;
     private FirebaseUser user;
-    private StringBuilder strb = new StringBuilder();
 
 
     @Override
