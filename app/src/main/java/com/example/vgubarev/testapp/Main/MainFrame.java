@@ -46,6 +46,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -66,18 +67,23 @@ public class MainFrame extends BaseActivity {
 
 
         setContentView(R.layout.activity_main_frame);
-        final TextView textViewCurr = findViewById(R.id.textViewCurrMonth);
         TextView textViewPast = findViewById(R.id.textViewPastMonth);
-        TextView textView10Days = findViewById(R.id.textViewTenDays);
-        TextView textView30Days = findViewById(R.id.textViewThirtyDays);
+        TextView textViewAverageCurr = findViewById(R.id.textViewAverageCurr);
+        TextView textViewAveragePast = findViewById(R.id.textViewAveragePast);
+        TextView textViewAverageQuarter = findViewById(R.id.textViewAverageQuarter);
+        TextView textViewAverageHalfYear = findViewById(R.id.textViewAverageHalfYear);
+        TextView textViewAverageYear = findViewById(R.id.textViewAverageYear);
         final ListView listView = findViewById(R.id.listView);
 
         DbUpd upd = new DbUpd();
-        upd.getCountWithoutDate(textViewCurr, 99, "count", true);
-        upd.getCountWithoutDate(textViewPast, 98, "count", true);
-        upd.getCountWithoutDate(textView10Days, 10, "count", true);
-        upd.getCountWithoutDate(textView30Days, 30, "count", true);
         getCountToListView(listView);
+        upd.getCountWithoutDate(textViewPast, 98, "count", true);
+        upd.getCountWithoutDate(textViewAverageCurr, 13, "count", true);
+        upd.getCountWithoutDate(textViewAveragePast, 15, "count", true);
+        upd.getCountWithoutDate(textViewAverageQuarter, 16, "count", true);
+        upd.getCountWithoutDate(textViewAverageHalfYear, 17, "count", true);
+        upd.getCountWithoutDate(textViewAverageYear, 18, "count", true);
+
         final Intent intent = new Intent(this, MainFrame.class);
 
 
@@ -98,9 +104,9 @@ public class MainFrame extends BaseActivity {
                 String getMonth = dateDialog.substring(3, 5);
                 String getYear = dateDialog.substring(6, 10);
                 final String date = getYear + "-" + getMonth + "-" + getDay;
-                final TextView textView = findViewById(R.id.invisibleTV);
-                textView.setText("");
-                db.getCountWithDate(textView, 101, date, date, null, "count", false);
+                final TextView textViewInv1 = findViewById(R.id.invisibleTV);
+                textViewInv1.setText("");
+                db.getCountWithDate(textViewInv1, 101, date, date, null, "count", false);
 
                 ad = new AlertDialog.Builder(context);
                 ad.setTitle(title);  // заголовок
@@ -113,7 +119,7 @@ public class MainFrame extends BaseActivity {
                 ad.setNeutralButton(button2String, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 
-                        db.postCount(111, date, null, textView.getText().toString(), null);
+                        db.postCount(111, date, null, textViewInv1.getText().toString(), null);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), "Удалено!", Toast.LENGTH_LONG).show();
                     }
@@ -160,7 +166,7 @@ public class MainFrame extends BaseActivity {
                                     String year = Integer.toString(datePicker.getYear());
                                     DbUpd db = new DbUpd();
 
-                                    db.postCount(112, date, year + "-" + month + "-" + day, textView.getText().toString(), String.valueOf(res));
+                                    db.postCount(112, date, year + "-" + month + "-" + day, textViewInv1.getText().toString(), String.valueOf(res));
                                     hideProgressDialog();
                                     startActivity(intent);
                                 } else Toast.makeText(getApplicationContext(), "Введите показания!", Toast.LENGTH_SHORT).show();
@@ -261,9 +267,8 @@ public class MainFrame extends BaseActivity {
 
                 try {
 
-                    URL url = new URL("http://46.149.225.24:8081/counter/testing.php");
+                    URL url = new URL("http://46.149.225.24:8081/counter/getlist.php");
 
-                    //URL url = new URL("http://192.168.100.23:8081/counter/testing.php");
                     JSONObject postDataParams = new JSONObject();
                     postDataParams.put("sql", (Integer) 777);
 
@@ -382,4 +387,3 @@ public class MainFrame extends BaseActivity {
         System.exit(0);
     }
 }
-

@@ -70,15 +70,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="10dp"
-                        android:text="@string/tenDays"
-                        android:textSize="22sp" />
+                        android:text="@string/pastMonth"
+                        android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textViewTenDays"
+                        android:id="@+id/textViewPastMonth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTurquoise"
-                        android:textSize="22sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <View
@@ -100,15 +100,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingEnd="10dp"
-                        android:text="@string/thirtyDays"
-                        android:textSize="22sp" />
+                        android:text="@string/averageCurr"
+                        android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textViewThirtyDays"
+                        android:id="@+id/textViewAverageCurr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTurquoise"
-                        android:textSize="22sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <View
@@ -130,15 +130,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:text="@string/currentMonth"
-                        android:textSize="22sp" />
+                        android:text="@string/averagePast"
+                        android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/textViewCurrMonth"
+                        android:id="@+id/textViewAveragePast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTurquoise"
-                        android:textSize="22sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <View
@@ -160,24 +160,86 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:text="@string/pastMonth"
-                        android:textSize="20sp" />
-
+                        android:text="@string/averageQuarter"
+                        android:textSize="18sp" />
                     <TextView
-                        android:id="@+id/textViewPastMonth"
+                        android:id="@+id/textViewAverageQuarter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorTurquoise"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="301dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="40dp"
+                    android:paddingTop="10dp">
+
                     <TextView
-                        android:id="@+id/invisibleTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"/>
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/averageHalfYear"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/textViewAverageHalfYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTurquoise"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="301dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingHorizontal="40dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/averageYear"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/textViewAverageYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTurquoise"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_height="100dp"
+                        android:layout_width="match_parent"
+                        android:text="@string/kostil"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/invisibleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:layout_width="match_parent"

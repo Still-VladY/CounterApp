@@ -5,10 +5,13 @@
 
 
     <string name="label">Счетчик посетителей</string>
-    <string name="tenDays">10 дней:</string>
-    <string name="thirtyDays">30 дней:</string>
-    <string name="currentMonth">Текущий месяц:</string>
-    <string name="pastMonth">Предыдущий месяц:</string>
+    <string name="averageCurr">Ср.зн./день тек. месяц:</string>
+    <string name="averagePast">Ср.зн./день пред. месяц:</string>
+    <string name="averageQuarter">Ср.зн./день квартал:</string>
+    <string name="averageHalfYear">Ср.зн./день пол года:</string>
+    <string name="averageYear">Ср.зн./день год:</string>
+    <string name="kostil">       </string>
+    <string name="pastMonth">Итого за пред. месяц:</string>
     <string name="NumberOfVisitors">Количество посетителей:</string>
     <string name="counterInsert">Ввести показания</string>
     <string name="counterOut">Вывести показания</string>

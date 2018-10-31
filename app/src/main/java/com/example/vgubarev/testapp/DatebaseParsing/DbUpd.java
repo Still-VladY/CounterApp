@@ -30,7 +30,7 @@ public class DbUpd {
 
 
     public void getCountWithDate(final TextView textView, final Integer sql, final String date1, final String date2,
-                                final String cou, final String number, final Boolean bool) {
+                                final String cou, final String number, final Boolean fact_visitors) {
 
         @SuppressLint("StaticFieldLeak")
         class SendPostRequest extends AsyncTask<String, Void, String> {
@@ -100,7 +100,7 @@ public class DbUpd {
             protected void onPostExecute(String result) {
 
                 try {
-                    loadIntoTextView(result, textView, number, bool);
+                    loadIntoTextView(result, textView, number, fact_visitors);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -287,7 +287,7 @@ public class DbUpd {
         return result.toString().trim();
     }
 
-    private void loadIntoTextView(String json, TextView textView, String number, Boolean bool) throws JSONException {
+    private void loadIntoTextView(String json, TextView textView, String number, Boolean fact_visitors) throws JSONException {
         JSONArray jsonArray = new JSONArray(json);
 
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -295,7 +295,7 @@ public class DbUpd {
 
             String count = obj.getString(number);
             if (!count.equals("null")) {
-                if (bool) {
+                if (fact_visitors) {
                     int newCount = Integer.valueOf(count) / 2;
                     String rightCount = String.valueOf(newCount);
                     textView.append(rightCount);
